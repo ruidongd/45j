@@ -14,15 +14,14 @@ public class Course {
 		enrolled_students = new Student[50];
 	}
 
-	public void addStudent(Student s) throws StudentLimitException
+	public void addStudent(Student s) throws StudentLimitException,DuplicateStudentException
 	{
-		if (enrollment == 50){
+		if (enrollment == 50)
 			throw new StudentLimitException();
-		}
-		else {
+		else if (enrolled_students.contains(s))
+			throw new DuplicateStudentException();
+		else
 			enrolled_students[enrollment++] = s;
-		}
-
 	}
 
 	public void removetudent(int studentID) throws StudentNotFoundException
@@ -43,9 +42,9 @@ public class Course {
 		}
 		else{
 			throw new StudentNotFoundException();
-		}	
+		}
 	}
-	
+
 
 	public void setCourseCode(String code)
 	{
