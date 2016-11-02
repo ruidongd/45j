@@ -22,25 +22,21 @@ public class RosterManager {
 
 	public void deleteCourse(String courseCode) throws CourseNotFoundException
 	{
-		boolean found = false;
 		int index = 0;
 		for (; index < total_courses; index++){
 			if(courses[index].getCourseCode() == courseCode)
-			{
-				found = true;
 				break; // will not increase index by index++
-			}
 		}
-		if(found)
-			// E.g We have [c1, c2, c2], total_number = 3
-			// If we delete the second one, the i will be 1 and the third one should be switched to be the second.
-			// course[1] = course[2]; Switch
-			// course[2] = null; total_number becomes 2
-			if(index < 9)
-				courses[index] = courses[index+1]; // index+1 = 10 will be out of index when index == 9
-			courses[--total_courses] = null;
-		else
+		// E.g We have [c1, c2, c2], total_number = 3
+		// If we delete the first one, the i will be 0 and the third one should be switched to be the first to make sure our index of 1 and index of 2 compose a streak.
+		// course[0] = course[2]; Switch
+		// course[2] = null
+		// total_number = 2, [c3, c2]
+		if(index == total_courses) // no execution of break -> not found
 			throw new CourseNotFoundException();
+		else if (index < 9) // The course is not listed on the last, which means it needs a switch. Index+1 = 10 will be out of index when index == 9(Last one no switch)
+			courses[index] = courses[--total_courses];
+		courses[total_courses] = null;
 	}
 
 	public void addStudent(Student s, String courseCode) throws StudentLimitException,CourseNotFoundException,DuplicateStudentException
