@@ -8,8 +8,8 @@ public class Course {
 
 	public Course()
 	{
-		courseCode = null;
-		courseName = null;
+		courseCode = "";
+		courseName = "";
 		enrollment = 0;
 		enrolled_students = new Student[50];
 	}
@@ -24,25 +24,45 @@ public class Course {
 			enrolled_students[enrollment++] = s;
 	}
 
-	public void removetudent(int studentID) throws StudentNotFoundException
+	public void removeStudent(int studentID) throws StudentNotFoundException
 	{
 
-		boolean found = false;
-		for(int index = 0; index < enrollment-1; index++)
+		int index = 0;
+		boolean found = true;
+		for(; index < enrollment; index++)
 		{
-			if (enrolled_students[index].getID() == studentID){
+			// Same logic with removeCourse
+			if(enrolled_students[index].getID() == studentID)
+			{
 				found = true;
+				break;
 			}
-			if (found == true){
-				enrolled_students[index] = enrolled_students[index++];
+			if(found)
+			{
+				if(index < 49)
+					enrolled_students[index] = enrolled_students[index+1];
+				enrolled_students[--enrollment] = null;
 			}
+			else
+				throw new StudentNotFoundException();
 		}
-		if(found == true){
-			enrolled_students[enrollment] = null;
-		}
-		else{
-			throw new StudentNotFoundException();
-		}
+		// Original Version
+		// Illegal to modify the list element during iteration
+		// boolean found = false;
+		// for(int index = 0; index < enrollment; index++)
+		// {
+		// 	if (enrolled_students[index].getID() == studentID){
+		// 		found = true;
+		// 	}
+		// 	if (found == true){
+		// 		enrolled_students[index] = enrolled_students[index++];
+		// }
+		// if(found == true){
+		// 	enrolled_students[--enrollment] = null;
+		// }
+		// else{
+		// 	throw new StudentNotFoundException();
+		// }
 	}
 
 
