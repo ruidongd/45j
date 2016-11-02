@@ -26,26 +26,19 @@ public class Course {
 
 	public void removeStudent(int studentID) throws StudentNotFoundException
 	{
-
+		// Same logic with removeCourse
 		int index = 0;
 		boolean found = true;
 		for(; index < enrollment; index++)
 		{
-			// Same logic with removeCourse
 			if(enrolled_students[index].getID() == studentID)
-			{
-				found = true;
 				break;
-			}
-			if(found)
-			{
-				if(index < 49)
-					enrolled_students[index] = enrolled_students[index+1];
-				enrolled_students[--enrollment] = null;
-			}
-			else
-				throw new StudentNotFoundException();
 		}
+		if(index == enrollment)
+			throw new StudentNotFoundException();
+		else if(index < 49)
+			enrolled_students[index] = enrolled_students[--enrollment];
+		enrolled_students[enrollment] = null;
 		// Original Version
 		// Illegal to modify the list element during iteration
 		// boolean found = false;
