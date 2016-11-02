@@ -115,7 +115,6 @@ public class RosterManager {
 			catch(StudentNotFoundException)
 				System.out.println("Student not found! You haven't add it!");
 
-
 		}
 		System.out.println("Program Finished!");
 
