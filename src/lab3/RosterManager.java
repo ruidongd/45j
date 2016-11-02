@@ -10,57 +10,58 @@ public class RosterManager {
 		courses = new Course[10];
 		total_courses = 0;
 	}
-	
-	public void addCourse(Course c) throws CourseLimitException
+
+	public void addCourse(Course c) throws CourseLimitException, DuplicateCourseException
 	{
-		if (total_courses == 10){
+		if (total_courses == 10)
 			throw new CourseLimitException();
-		}
-		courses[total_courses++] = c;		
+		else if (courses.contains(c))
+			throw new DuplicateCourseException();
+		courses[total_courses++] = c;
 	}
 
 	public void deleteCourse(String courseCode) throws CourseNotFoundException
 	{
-		boolean found = false;
-		for (int i = 0; i < total_courses-1; i++){
-			if(courses[i].getCourseCode() == courseCode){
-				found = true;
-			}
-			if(found == true){
-				courses[i] = courses[i++];
-			}
+		int index = 0;
+		for (; index < total_courses; index++){
+			if(courses[index].getCourseCode() == courseCode)
+				break; // will not increase index by index++
 		}
-		if (found == true){
-			courses[total_courses] = null;
-		}
-		else{
+		// E.g We have [c1, c2, c2], total_number = 3
+		// If we delete the first one, the i will be 0 and the third one should be switched to be the first to make sure our index of 1 and index of 2 compose a streak.
+		// course[0] = course[2]; Switch
+		// course[2] = null
+		// total_number = 2, [c3, c2]
+		if(index == total_courses) // no execution of break -> not found
 			throw new CourseNotFoundException();
-		}
+		else if (index < 9) // The course is not listed on the last, which means it needs a switch. Index+1 = 10 will be out of index when index == 9(Last one no switch)
+			courses[index] = courses[--total_courses];
+		courses[total_courses] = null;
 	}
 
-	
-	public void addStudent(Student s, String courseCode) throws StudentLimitException,CourseNotFoundException
+	public void addStudent(Student s, String courseCode) throws StudentLimitException,CourseNotFoundException,DuplicateStudentException
 	{
 		for (int i = 0; i < total_courses;i++){
 			if (courses[i].getCourseCode().equals(courseCode)){
-				courses[i].addStudent(s);
+				if(!courses[i].enrolled_students.contains(s))
+					courses[i].addStudent(s);
 				break;
 			}
 		}
-		
+		throw new CourseNotFoundException();
+
 	}
-	
+
 
 	public void deleteStudent(int studentId, String courseCode) throws StudentNotFoundException,CourseNotFoundException
 	{
 		for (int i = 0; i < total_courses;i++){
 			if(courses[i].getCourseCode().equals(courseCode)){
-				courses[i].removetudent(studentId);
-				
+				courses[i].removeStudent(studentId);
 				break;
 			}
 		}
-		
+		throw new CourseNotFoundException();
 	}
 
 
@@ -68,7 +69,7 @@ public class RosterManager {
 	{
 		System.out.println("");
 	}
-	
+
 	public void run()
 	{
 		System.out.println("Welcome to Class Roster Manager!");
@@ -76,14 +77,44 @@ public class RosterManager {
 		String command;
 		while(!quit)
 		{
-			command = ClassRosterUI.getCommand().toUpperCase();
-			if(command == "Q"){
+			try{
+				command = ClassRosterUI.getCommand().toUpperCase();
+				if(command == "Q"){
 					quit = true;
+				}
+				else if(command.equals("AC")){
+					addCourse(ClassRosterUI.getCourse());
+				}
+				else if(command.equals("DC")){
+					deleteCourse(ClassRosterUI.getCourseCode());
+				}
+				else if (command.equals("AS")){
+					addStudent(ClassRosterUI.getStudent(), ClassRosterUI.getCourseCode());
+				}
+				else if (command.equals("DS")){
+					deleteStudent(ClassRosterUI.getStudentID(), ClassRosterUI.getCourseCode());
+				}
+				else if (command.equals("P")){
+					// need implemented
+				}
 			}
+			catch(CourseLimitException)
+				System.out.println("Course limit has been met! Cannot add course anymore!");
+			catch(DuplicateCourseException)
+				System.out.println("Course has been added! Cannot add again!");
+			catch(CourseNotFoundException)
+				System.out.println("Course not found! You haven't added it!");
+			catch(StudentLimitException)
+				System.out.println("Student limit has been met! Cannot add student into this course anymore!");
+			catch(DuplicateStudentException)
+				System.out.println("Student has been enrolled into this course! Cannot enroll again!");
+			catch(StudentNotFoundException)
+				System.out.println("Student not found! You haven't add it!");
+
 		}
 		System.out.println("Program Finished!");
 
 		}
-	
-	
+
+
 }
