@@ -24,7 +24,7 @@ public class RosterManager {
 	{
 		boolean found = false;
 		int index = 0;
-		for (; index < total_courses-1; index++){
+		for (; index < total_courses; index++){
 			if(courses[index].getCourseCode() == courseCode)
 			{
 				found = true;
