@@ -46,7 +46,7 @@ public class ClassRosterUI {
 		String coursecode = getCourseCode();
 		System.out.println("Enter Course Name: ");
 		String coursename = reader.nextLine();
-		c.setCourseCode(courseCode);
+		c.setCourseCode(coursecode);
 		c.setCourseName(coursename);
 		reader.close();
 		return c;
@@ -70,7 +70,7 @@ public class ClassRosterUI {
 		Student s = new Student();
 		s.setFirstName(firstname);
 		s.setLastName(lastname);
-		s.setID(studentID);
+		s.setID(StudentID);
 		reader.close();
 		return s;
 	}

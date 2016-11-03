@@ -14,11 +14,19 @@ public class Course {
 		enrolled_students = new Student[50];
 	}
 
+	public boolean containsStudent(Student s){
+		for (int i = 0; i < enrollment;i++){
+			if (enrolled_students[i] == s ){
+				return true;
+			}
+		}
+		return false;
+	}
 	public void addStudent(Student s) throws StudentLimitException,DuplicateStudentException
 	{
 		if (enrollment == 50)
 			throw new StudentLimitException();
-		else if (enrolled_students.contains(s))
+		else if (containsStudent(s))
 			throw new DuplicateStudentException();
 		else
 			enrolled_students[enrollment++] = s;
@@ -28,7 +36,6 @@ public class Course {
 	{
 		// Same logic with removeCourse
 		int index = 0;
-		boolean found = true;
 		for(; index < enrollment; index++)
 		{
 			if(enrolled_students[index].getID() == studentID)
@@ -39,23 +46,7 @@ public class Course {
 		else if(index < 49)
 			enrolled_students[index] = enrolled_students[--enrollment];
 		enrolled_students[enrollment] = null;
-		// Original Version
-		// Illegal to modify the list element during iteration
-		// boolean found = false;
-		// for(int index = 0; index < enrollment; index++)
-		// {
-		// 	if (enrolled_students[index].getID() == studentID){
-		// 		found = true;
-		// 	}
-		// 	if (found == true){
-		// 		enrolled_students[index] = enrolled_students[index++];
-		// }
-		// if(found == true){
-		// 	enrolled_students[--enrollment] = null;
-		// }
-		// else{
-		// 	throw new StudentNotFoundException();
-		// }
+		
 	}
 
 
