@@ -10,12 +10,20 @@ public class RosterManager {
 		courses = new Course[10];
 		total_courses = 0;
 	}
+	public boolean containsCourse(Course c){
+		for (int i = 0; i < total_courses;i++){
+			if(courses[i] == c){
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public void addCourse(Course c) throws CourseLimitException, DuplicateCourseException
 	{
 		if (total_courses == 10)
 			throw new CourseLimitException();
-		else if (courses.contains(c))
+		else if (containsCourse(c))
 			throw new DuplicateCourseException();
 		courses[total_courses++] = c;
 	}
@@ -43,7 +51,7 @@ public class RosterManager {
 	{
 		for (int i = 0; i < total_courses;i++){
 			if (courses[i].getCourseCode().equals(courseCode)){
-				if(!courses[i].enrolled_students.contains(s))
+				if(!courses[i].containsStudent(s))
 					courses[i].addStudent(s);
 				break;
 			}
@@ -67,7 +75,17 @@ public class RosterManager {
 
 	public void printRoster()
 	{
-		System.out.println("");
+		System.out.println("********************");
+		for (Course c: courses){
+			System.out.println(c.getCourseCode()+": "+c.getCourseName());
+			System.out.println("Enrolled: "+c.getEnrollment());
+			for (Student s: c.getEnrolled()){
+				System.out.println("           "+s.getID()+" | "+s.getLastName()+", "+s.getFirstName());
+				
+			}
+		}
+		System.out.println("********************");
+		
 	}
 
 	public void run()
@@ -95,21 +113,27 @@ public class RosterManager {
 					deleteStudent(ClassRosterUI.getStudentID(), ClassRosterUI.getCourseCode());
 				}
 				else if (command.equals("P")){
-					// need implemented
+					printRoster();
 				}
 			}
-			catch(CourseLimitException)
+			catch(CourseLimitException e){
 				System.out.println("Course limit has been met! Cannot add course anymore!");
-			catch(DuplicateCourseException)
+			}
+			catch(DuplicateCourseException e){
 				System.out.println("Course has been added! Cannot add again!");
-			catch(CourseNotFoundException)
+			}
+			catch(CourseNotFoundException e){
 				System.out.println("Course not found! You haven't added it!");
-			catch(StudentLimitException)
+			}
+			catch(StudentLimitException e){
 				System.out.println("Student limit has been met! Cannot add student into this course anymore!");
-			catch(DuplicateStudentException)
+			}
+			catch(DuplicateStudentException e){
 				System.out.println("Student has been enrolled into this course! Cannot enroll again!");
-			catch(StudentNotFoundException)
+			}
+			catch(StudentNotFoundException e){
 				System.out.println("Student not found! You haven't add it!");
+			}
 
 		}
 		System.out.println("Program Finished!");
