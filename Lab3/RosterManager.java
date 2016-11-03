@@ -36,7 +36,7 @@ public class RosterManager {
 		
 		int index = 0;
 		for (; index < total_courses; index++){
-			if(courses[index].getCourseCode() == courseCode)
+			if(courses[index].getCourseCode().toLowerCase() .equals(courseCode.toLowerCase()))
 				break; // will not increase index by index++
 		}
 		// E.g We have [c1, c2, c2], total_number = 3
@@ -57,14 +57,11 @@ public class RosterManager {
 			throw new EmptyCourseListException();
 		}
 		for (int i = 0; i < total_courses;i++){
-			if (courses[i].getCourseCode().equals(courseCode)){
-				if(courses[i].getEnrollment() == 0){
-					throw new EmptyStudentListException();
-				}
+			if (courses[i].getCourseCode().toLowerCase().equals(courseCode.toLowerCase())){
 				if(!courses[i].containsStudent(s)){
 					courses[i].addStudent(s);
 				}
-				break;
+				return;
 			}
 			
 		}
@@ -79,13 +76,14 @@ public class RosterManager {
 			throw new EmptyCourseListException();
 		}
 		for (int i = 0; i < total_courses;i++){
-			if(courses[i].getCourseCode().equals(courseCode)){
-				
+			if(courses[i].getCourseCode().toLowerCase().equals(courseCode.toLowerCase())){
 				if(courses[i].getEnrollment() == 0){
 					throw new EmptyStudentListException();
 				}
-				courses[i].removeStudent(studentId);
-				break;
+				else{
+					courses[i].removeStudent(studentId);
+					return;
+				}
 			}
 		}
 		throw new CourseNotFoundException();

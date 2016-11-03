@@ -16,7 +16,7 @@ public class Course {
 
 	public boolean containsStudent(Student s){
 		for (int i = 0; i < enrollment;i++){
-			if (enrolled_students[i].getID() == s.getID() ){
+			if (enrolled_students[i].getID() == s.getID()){
 				return true;
 			}
 		}
@@ -29,7 +29,34 @@ public class Course {
 		else if (containsStudent(s))
 			throw new DuplicateStudentException();
 		else
-			enrolled_students[enrollment++] = s;
+		{
+			int i = 0;
+			for (; i < enrollment; i++){
+
+				//check last name to determine if new student should appear first 
+				boolean compareLastName = enrolled_students[i].getLastName().toLowerCase().compareTo(s.getLastName().toLowerCase()) > 0;
+				//check first name to determine if new student should appear first 
+				boolean compareFirstName = ( enrolled_students[i].getLastName().toLowerCase().compareTo(s.getLastName().toLowerCase()) == 0) 
+						&&  enrolled_students[i].getFirstName().toLowerCase().compareTo(s.getFirstName().toLowerCase()) > 0;
+				//check id to determine if new student should appear first 
+				boolean compareID = ( enrolled_students[i].getLastName().toLowerCase().compareTo(s.getLastName().toLowerCase()) == 0) 
+						&&  enrolled_students[i].getFirstName().toLowerCase().compareTo(s.getFirstName().toLowerCase()) == 0 
+						&&  enrolled_students[i].getID() > s.getID();		
+				if(compareLastName || compareFirstName || compareID)
+				{
+					break;
+				}
+				
+			}
+			for(int j = enrollment; j > i; --j)
+			{
+				enrolled_students[j] = enrolled_students[j-1];
+			}
+			enrolled_students[i] = s;
+			++enrollment;
+			
+		}
+			
 	}
 
 	public void removeStudent(int studentID) throws StudentNotFoundException, EmptyStudentListException
