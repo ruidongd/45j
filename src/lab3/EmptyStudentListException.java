@@ -1,4 +1,4 @@
-package lab3;
+package Lab3;
 
 public class EmptyStudentListException extends Exception {
 	public EmptyStudentListException(){}

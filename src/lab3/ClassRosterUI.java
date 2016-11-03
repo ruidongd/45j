@@ -1,12 +1,13 @@
-package lab3;
+package Lab3;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 public class ClassRosterUI {
 	private static RosterManager rm;
-
+    private static Scanner reader;
 	public ClassRosterUI(){
 		rm = new RosterManager();
+		reader = new Scanner(System.in);
 	}
 
 	public static void printMenu()
@@ -19,49 +20,48 @@ public class ClassRosterUI {
 	{
 		String command;
 		List<String> command_list = Arrays.asList("ac", "dc", "as", "ds", "p", "q");
-		Scanner reader = new Scanner(System.in);
+		//Scanner reader = new Scanner(System.in);
 		System.out.println("Enter Command: ");
 		command  = reader.nextLine();
-
 		if(!command_list.contains(command))
 		{
 				System.out.println("Invalid command! Please re-enter the command!");
 				command = reader.nextLine();
 		}
-		reader.close();
+		//reader.close();
 		return command;
 
 	}
 	public static String getCourseCode(){
-		Scanner reader = new Scanner(System.in);
+		//Scanner reader = new Scanner(System.in);
 		System.out.println("Enter Course Code: ");
 		String courseCode = reader.nextLine();
-		reader.close();
+		//reader.close();
 		return courseCode;
 	}
 	public static Course getCourse()
 	{
-		Scanner reader = new Scanner(System.in);
+		//Scanner reader = new Scanner(System.in);
 		Course c = new Course();
 		String coursecode = getCourseCode();
 		System.out.println("Enter Course Name: ");
 		String coursename = reader.nextLine();
 		c.setCourseCode(coursecode);
 		c.setCourseName(coursename);
-		reader.close();
+		//reader.close();
 		return c;
 	}
 	public static int getStudentID()
 	{
-		Scanner reader = new Scanner(System.in);
+		//Scanner reader = new Scanner(System.in);
 		System.out.println("Enter StudentID: ");
-		int studentID = reader.nextInt();
-		reader.close();
+		int studentID = Integer.parseInt(reader.nextLine());
+		//reader.close();
 		return studentID;
 	}
 	public static Student getStudent()
 	{
-		Scanner reader = new Scanner(System.in);
+		//Scanner reader = new Scanner(System.in);
 		int StudentID = getStudentID();
 		System.out.println("Enter Last Name: ");
 		String lastname = reader.nextLine();
@@ -71,7 +71,7 @@ public class ClassRosterUI {
 		s.setFirstName(firstname);
 		s.setLastName(lastname);
 		s.setID(StudentID);
-		reader.close();
+		//reader.close();
 		return s;
 	}
 

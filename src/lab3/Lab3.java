@@ -1,6 +1,6 @@
-package lab3;
+package Lab3;
 
-public class lab3 {
+public class Lab3 {
 	public static void main(String[] argv)
 	{
 		RosterManager r =  new RosterManager();

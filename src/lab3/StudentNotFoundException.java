@@ -1,4 +1,4 @@
-package lab3;
+package Lab3;
 public class StudentNotFoundException extends Exception{
 	public void StudentNotFoundException(){}
 }

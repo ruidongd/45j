@@ -1,4 +1,4 @@
-package lab3;
+package Lab3;
 public class RosterManager {
 	//an array of courses
 	private Course[] courses;
@@ -12,8 +12,9 @@ public class RosterManager {
 	}
 	public boolean containsCourse(Course c){
 		for (int i = 0; i < total_courses;i++){
-			if(courses[i].getCourseCode() == c.getCourseCode())
+			if(courses[i].getCourseCode() == c.getCourseCode()){
 				return true;
+			}
 		}
 		return false;
 	}
@@ -27,11 +28,15 @@ public class RosterManager {
 		courses[total_courses++] = c;
 	}
 
-	public void deleteCourse(String courseCode) throws CourseNotFoundException
+	public void deleteCourse(String courseCode) throws CourseNotFoundException,EmptyCourseListException
 	{
+		if(total_courses == 0){
+			throw new EmptyCourseListException();
+		}
+		
 		int index = 0;
 		for (; index < total_courses; index++){
-			if(courses[index].getCourseCode() == courseCode)
+			if(courses[index].getCourseCode().toLowerCase() .equals(courseCode.toLowerCase()))
 				break; // will not increase index by index++
 		}
 		// E.g We have [c1, c2, c2], total_number = 3
@@ -46,30 +51,44 @@ public class RosterManager {
 		courses[total_courses] = null;
 	}
 
-	public void addStudent(Student s, String courseCode) throws StudentLimitException,CourseNotFoundException,DuplicateStudentException
+	public void addStudent(Student s, String courseCode) throws StudentLimitException,CourseNotFoundException,DuplicateStudentException, EmptyCourseListException, EmptyStudentListException
 	{
+		if (total_courses == 0){
+			throw new EmptyCourseListException();
+		}
 		for (int i = 0; i < total_courses;i++){
-			if (courses[i].getCourseCode().equals(courseCode)){
-				if(!courses[i].containsStudent(s))
+			if (courses[i].getCourseCode().toLowerCase().equals(courseCode.toLowerCase())){
+				if(!courses[i].containsStudent(s)){
 					courses[i].addStudent(s);
-				break;
+				}
+				return;
 			}
+			
 		}
 		throw new CourseNotFoundException();
 
 	}
 
 
-	public void deleteStudent(int studentId, String courseCode) throws StudentNotFoundException,CourseNotFoundException
+	public void deleteStudent(int studentId, String courseCode) throws StudentNotFoundException,CourseNotFoundException, EmptyStudentListException, EmptyCourseListException
 	{
+		if (total_courses == 0){
+			throw new EmptyCourseListException();
+		}
 		for (int i = 0; i < total_courses;i++){
-			if(courses[i].getCourseCode().equals(courseCode)){
-				courses[i].removeStudent(studentId);
-				break;
+			if(courses[i].getCourseCode().toLowerCase().equals(courseCode.toLowerCase())){
+				if(courses[i].getEnrollment() == 0){
+					throw new EmptyStudentListException();
+				}
+				else{
+					courses[i].removeStudent(studentId);
+					return;
+				}
 			}
 		}
 		throw new CourseNotFoundException();
 	}
+	
 
 
 	public void printRoster()
@@ -80,11 +99,11 @@ public class RosterManager {
 			System.out.println("Enrolled: "+c.getEnrollment());
 			for (Student s: c.getEnrolled()){
 				System.out.println("           "+s.getID()+" | "+s.getLastName()+", "+s.getFirstName());
-
+				
 			}
 		}
 		System.out.println("********************");
-
+		
 	}
 
 	public void run()
@@ -95,6 +114,7 @@ public class RosterManager {
 		while(!quit)
 		{
 			try{
+				ClassRosterUI.printMenu();
 				command = ClassRosterUI.getCommand().toUpperCase();
 				if(command == "Q"){
 					quit = true;
@@ -132,6 +152,14 @@ public class RosterManager {
 			}
 			catch(StudentNotFoundException e){
 				System.out.println("Student not found! You haven't add it!");
+			}
+			catch(EmptyCourseListException e){
+				System.out.println("Courses list is empty! You haven't add it!");
+				
+			}
+			catch(EmptyStudentListException e){
+				System.out.println("Students list is empty! You haven't add it!");
+				
 			}
 
 		}
