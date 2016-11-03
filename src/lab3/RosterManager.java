@@ -12,7 +12,7 @@ public class RosterManager {
 	}
 	public boolean containsCourse(Course c){
 		for (int i = 0; i < total_courses;i++){
-			if(courses[i] == c){
+			if(courses[i].getCourseCode() == c.getCourseCode()){
 				return true;
 			}
 		}
@@ -81,11 +81,11 @@ public class RosterManager {
 			System.out.println("Enrolled: "+c.getEnrollment());
 			for (Student s: c.getEnrolled()){
 				System.out.println("           "+s.getID()+" | "+s.getLastName()+", "+s.getFirstName());
-				
+
 			}
 		}
 		System.out.println("********************");
-		
+
 	}
 
 	public void run()
