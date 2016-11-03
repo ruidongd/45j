@@ -33,7 +33,7 @@ public class RosterManager {
 		if(total_courses == 0){
 			throw new EmptyCourseListException();
 		}
-		
+
 		int index = 0;
 		for (; index < total_courses; index++){
 			if(courses[index].getCourseCode() == courseCode)
@@ -66,7 +66,7 @@ public class RosterManager {
 				}
 				break;
 			}
-			
+
 		}
 		throw new CourseNotFoundException();
 
@@ -80,7 +80,7 @@ public class RosterManager {
 		}
 		for (int i = 0; i < total_courses;i++){
 			if(courses[i].getCourseCode().equals(courseCode)){
-				
+
 				if(courses[i].getEnrollment() == 0){
 					throw new EmptyStudentListException();
 				}
@@ -90,22 +90,23 @@ public class RosterManager {
 		}
 		throw new CourseNotFoundException();
 	}
-	
+
 
 
 	public void printRoster()
 	{
 		System.out.println("********************");
-		for (Course c: courses){
+		for (int i = 0; i < total_courses; i++){
+			Course c = courses[i];
 			System.out.println(c.getCourseCode()+": "+c.getCourseName());
-			System.out.println("Enrolled: "+c.getEnrollment());
-			for (Student s: c.getEnrolled()){
+			System.out.println("Enrolled: "+ c.getEnrollment());
+			for (int index = 0; index < c.getEnrollment(); index++){
+				Student s = c.getEnrolled()[index];
 				System.out.println("           "+s.getID()+" | "+s.getLastName()+", "+s.getFirstName());
-				
 			}
 		}
 		System.out.println("********************");
-		
+
 	}
 
 	public void run()
@@ -157,11 +158,11 @@ public class RosterManager {
 			}
 			catch(EmptyCourseListException e){
 				System.out.println("Courses list is empty! You haven't add it!");
-				
+
 			}
 			catch(EmptyStudentListException e){
 				System.out.println("Students list is empty! You haven't add it!");
-				
+
 			}
 
 		}
