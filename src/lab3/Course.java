@@ -16,7 +16,7 @@ public class Course {
 
 	public boolean containsStudent(Student s){
 		for (int i = 0; i < enrollment;i++){
-			if (enrolled_students[i] == s ){
+			if (enrolled_students[i].getID() == s.getID() ){
 				return true;
 			}
 		}
@@ -46,7 +46,7 @@ public class Course {
 		else if(index < 49)
 			enrolled_students[index] = enrolled_students[--enrollment];
 		enrolled_students[enrollment] = null;
-		
+
 	}
 
 
