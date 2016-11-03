@@ -12,9 +12,8 @@ public class RosterManager {
 	}
 	public boolean containsCourse(Course c){
 		for (int i = 0; i < total_courses;i++){
-			if(courses[i].getCourseCode() == c.getCourseCode()){
+			if(courses[i].getCourseCode() == c.getCourseCode())
 				return true;
-			}
 		}
 		return false;
 	}

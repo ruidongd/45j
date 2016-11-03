@@ -16,9 +16,8 @@ public class Course {
 
 	public boolean containsStudent(Student s){
 		for (int i = 0; i < enrollment;i++){
-			if (enrolled_students[i].getID() == s.getID() ){
+			if (enrolled_students[i].getID() == s.getID())
 				return true;
-			}
 		}
 		return false;
 	}
