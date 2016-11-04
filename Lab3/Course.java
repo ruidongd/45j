@@ -24,32 +24,20 @@ public class Course {
 	}
 	public void addStudent(Student s) throws StudentLimitException,DuplicateStudentException
 	{
-		if (enrollment == 50){
-			throw new StudentLimitException();
-		}
-		if (containsStudent(s)){
-			
-			throw new DuplicateStudentException();
-		}
-		else
-		{
+
 			int i = 0;
 			for (; i < enrollment; i++){
-
-				
 				boolean compareLastName = enrolled_students[i].getLastName().toLowerCase().compareTo(s.getLastName().toLowerCase()) > 0;
-				
-				boolean compareFirstName = ( enrolled_students[i].getLastName().toLowerCase().compareTo(s.getLastName().toLowerCase()) == 0) 
+
+				boolean compareFirstName = ( enrolled_students[i].getLastName().toLowerCase().compareTo(s.getLastName().toLowerCase()) == 0)
 						&&  enrolled_students[i].getFirstName().toLowerCase().compareTo(s.getFirstName().toLowerCase()) > 0;
-				
-				boolean compareID = ( enrolled_students[i].getLastName().toLowerCase().compareTo(s.getLastName().toLowerCase()) == 0) 
-						&&  enrolled_students[i].getFirstName().toLowerCase().compareTo(s.getFirstName().toLowerCase()) == 0 
-						&&  enrolled_students[i].getID() > s.getID();		
+
+				boolean compareID = ( enrolled_students[i].getLastName().toLowerCase().compareTo(s.getLastName().toLowerCase()) == 0)
+						&&  enrolled_students[i].getFirstName().toLowerCase().compareTo(s.getFirstName().toLowerCase()) == 0
+						&&  enrolled_students[i].getID() > s.getID();
+
 				if(compareLastName || compareFirstName || compareID)
-				{
 					break;
-				}
-				
 			}
 			for(int j = enrollment; j > i; --j)
 			{
@@ -57,16 +45,11 @@ public class Course {
 			}
 			enrolled_students[i] = s;
 			++enrollment;
-			
-		}
-			
+
 	}
 
-	public void removeStudent(int studentID) throws StudentNotFoundException, EmptyStudentListException
+	public void removeStudent(int studentID) throws StudentNotFoundException
 	{
-		if (enrollment == 0){
-			throw new EmptyStudentListException();
-		}
 		// Same logic with removeCourse
 		int index = 0;
 		for(; index < enrollment; index++)
@@ -79,7 +62,7 @@ public class Course {
 		else if(index < 49)
 			enrolled_students[index] = enrolled_students[--enrollment];
 		enrolled_students[enrollment] = null;
-		
+
 	}
 
 

@@ -19,23 +19,13 @@ public class RosterManager {
 		return false;
 	}
 
-	public void addCourse(Course c) throws CourseLimitException, DuplicateCourseException
+	public void addCourse(Course c)
 	{
-		if (total_courses == 10)
-			throw new CourseLimitException();
-		else if (containsCourse(c.getCourseCode()))
-			throw new DuplicateCourseException();
-		else{
 			courses[total_courses++] = c;
-		}
 	}
 
-	public void deleteCourse(String courseCode) throws CourseNotFoundException,EmptyCourseListException
+	public void deleteCourse(String courseCode) throws CourseNotFoundException
 	{
-		if(total_courses == 0){
-			throw new EmptyCourseListException();
-		}
-
 		int index = 0;
 		for (; index < total_courses; index++){
 			if(courses[index].getCourseCode().toLowerCase() .equals(courseCode.toLowerCase()))
@@ -53,65 +43,29 @@ public class RosterManager {
 		courses[total_courses] = null;
 	}
 
-	public void addStudent(Student s, String courseCode) throws StudentLimitException,CourseNotFoundException,DuplicateStudentException, EmptyCourseListException, EmptyStudentListException
+	public void addStudent(Student s, String courseCode) throws DuplicateStudentException
 	{
-		if (total_courses == 0){
-			throw new EmptyCourseListException();
-		}
 		int i = 0;
 		for (; i < total_courses;i++){
-			if (courses[i].getCourseCode().toLowerCase().equals(courseCode.toLowerCase())){
+			if (courses[i].getCourseCode().toLowerCase().equals(courseCode.toLowerCase()))
 				break;
-			}
-<<<<<<< HEAD
-
-=======
->>>>>>> jzeng5/master
 		}
-		if (i == total_courses){
-			throw new CourseNotFoundException();
-		}
-		else if(courses[i].containsStudent(s)){
+		if(courses[i].containsStudent(s))
 			throw new DuplicateStudentException();
-		}
-		else{
+		else
 			courses[i].addStudent(s);
-		}
 
 	}
 
 
-	public void deleteStudent(int studentId, String courseCode) throws StudentNotFoundException,CourseNotFoundException, EmptyStudentListException, EmptyCourseListException
+	public void deleteStudent(int studentId, String courseCode) throws StudentNotFoundException
 	{
-		if (total_courses == 0){
-			throw new EmptyCourseListException();
-		}
-<<<<<<< HEAD
 		for (int i = 0; i < total_courses;i++){
-			if(courses[i].getCourseCode().equals(courseCode)){
-
-				if(courses[i].getEnrollment() == 0){
-					throw new EmptyStudentListException();
-				}
-				courses[i].removeStudent(studentId);
-=======
-		int i = 0;
-		for (; i < total_courses;i++){
-			if(courses[i].getCourseCode().toLowerCase().equals(courseCode.toLowerCase())){
->>>>>>> jzeng5/master
-				break;
-			}
-		}
-		if ( i == total_courses){
-			throw new CourseNotFoundException();
-		}
-		else if ((courses[i].getEnrollment() == 0)){
-			throw new EmptyStudentListException();
-		}
-		else{
+			if(courses[i].getCourseCode().toLowerCase().equals(courseCode.toLowerCase()))
 			courses[i].removeStudent(studentId);
 		}
-		
+
+
 	}
 
 
@@ -119,30 +73,17 @@ public class RosterManager {
 	public void printRoster()
 	{
 		System.out.println("********************");
-<<<<<<< HEAD
-		for (int i = 0; i < total_courses; i++){
-			Course c = courses[i];
-			System.out.println(c.getCourseCode()+": "+c.getCourseName());
-			System.out.println("Enrolled: "+ c.getEnrollment());
-			for (int index = 0; index < c.getEnrollment(); index++){
-				Student s = c.getEnrolled()[index];
-				System.out.println("           "+s.getID()+" | "+s.getLastName()+", "+s.getFirstName());
-=======
 		for (Course c: courses){
 			if ( c != null){
 				System.out.println(c.getCourseCode()+": "+c.getCourseName());
 				System.out.println("Enrolled: "+c.getEnrollment());
 				for (Student s: c.getEnrolled()){
-					if (s != null){
+					if (s != null)
 						System.out.println("          "+s.getID()+" | "+s.getLastName()+", "+s.getFirstName());
-					}
-					
 				}
->>>>>>> jzeng5/master
 			}
 		}
 		System.out.println("********************");
-
 	}
 
 	public void run()
@@ -159,65 +100,78 @@ public class RosterManager {
 					quit = true;
 				}
 				else if(command.equals("AC")){
-					addCourse(ClassRosterUI.getCourse());
+					if(total_courses == 10)
+						throw new CourseLimitException();
+					String courseCode = ClassRosterUI.getCourseCode();
+					if(containsCourse(courseCode))
+						throw new DuplicateCourseException();
+					addCourse(ClassRosterUI.getCourse(courseCode));
 				}
 				else if(command.equals("DC")){
+					if(total_courses == 0)
+						throw new EmptyCourseListException();
 					deleteCourse(ClassRosterUI.getCourseCode());
 				}
 				else if (command.equals("AS")){
-					String c =  ClassRosterUI.getCourseCode();
-					if (!containsCourse(c)){
+					if(total_courses == 0)
+						throw new EmptyCourseListException();
+					String courseCode =  ClassRosterUI.getCourseCode();
+					if (!containsCourse(courseCode)){
 						throw new CourseNotFoundException();
 					}
-					else{
-						addStudent(ClassRosterUI.getStudent(),c);
+					for(int index = 0; index < total_courses; index++)
+					{
+						if(total_courses[index].getCourseCode() == courseCode && total_courses[index].enrollment == 50)
+							throw new StudentLimitException();
 					}
+					addStudent(ClassRosterUI.getStudent(),courseCode);
 				}
 				else if (command.equals("DS")){
-					String c =  ClassRosterUI.getCourseCode();
-					if (!containsCourse(c)){
+					if(total_courses == 0)
+						throw new EmptyCourseListException();
+					String courseCode =  ClassRosterUI.getCourseCode();
+					if (!containsCourse(c))
 						throw new CourseNotFoundException();
+					for(int index = 0; index < total_courses; index++)
+					{
+						if(total_courses[index].getCourseCode() == courseCode && total_courses[index].enrollment == 0)
+							throw new EmptyStudentListException();
 					}
-					else{
-						deleteStudent(ClassRosterUI.getStudentID(), c);
-					}
-					
+					deleteStudent(ClassRosterUI.getStudentID(), courseCode);
 				}
-				else if (command.equals("P")){
+				else if (command.equals("P"))
 					printRoster();
-				}
 			}
 			catch(CourseLimitException e){
-				System.out.println("Course limit has been met! Cannot add course anymore!");
+				System.out.println("ERROR: Course limit has been met.");
 			}
 			catch(DuplicateCourseException e){
-				System.out.println("Course has been added! Cannot add again!");
+				System.out.println("ERROR: Course has been added.");
 			}
 			catch(CourseNotFoundException e){
-				System.out.println("Course not found! You haven't added it!");
+				System.out.println("ERROR: Could not find course.");
 			}
 			catch(StudentLimitException e){
-				System.out.println("Student limit has been met! Cannot add student into this course anymore!");
+				System.out.println("ERROR: Student limit has been met.");
 			}
 			catch(DuplicateStudentException e){
-				System.out.println("Student has been enrolled into this course! Cannot enroll again!");
+				System.out.println("ERROR: Student has been enrolled into this course.");
 			}
 			catch(StudentNotFoundException e){
-				System.out.println("Student not found! You haven't add it!");
+				System.out.println("ERROR: Student could not be found.");
 			}
 			catch(EmptyCourseListException e){
-				System.out.println("Courses list is empty! You haven't add it!");
-
+				System.out.println("ERRPR: Courses list is empty.");
 			}
 			catch(EmptyStudentListException e){
-				System.out.println("Students list is empty! You haven't add it!");
+				System.out.println("ERROR: Students list is empty.");
 
 			}
 
 		}
 		System.out.println("Program Finished!");
 		ClassRosterUI.closereader();
-		
+
 		}
 
 
