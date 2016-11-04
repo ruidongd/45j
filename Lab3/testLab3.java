@@ -29,7 +29,7 @@ public class testLab3 {
 		c1.setCourseCode("ICS31");
 		c1.setCourseName("Introduction to Python");
 		rm.addCourse(c1);
-		assertTrue("Courses[] contains ICS31",rm.containsCourse(c1));
+		assertTrue("Courses[] contains ICS31",rm.containsCourse(c1.getCourseCode()));
 	}
 	//Normal case
 	@Test
@@ -38,7 +38,7 @@ public class testLab3 {
 		c2.setCourseCode("ICS45C");
 		c2.setCourseName("Praogramming in C/C++");
 		rm.addCourse(c2);
-		assertTrue("Courses[] contains ICS45C",rm.containsCourse(c2));
+		assertTrue("Courses[] contains ICS45C",rm.containsCourse(c2.getCourseCode()));
 	}
 	//Normal case
 	@Test
@@ -47,7 +47,7 @@ public class testLab3 {
 		c3.setCourseCode("ICS46");
 		c3.setCourseName("Data Structure Implementation and Analysis");
 		rm.addCourse(c3);
-		assertTrue("Courses[] contains ICS46",rm.containsCourse(c3));
+		assertTrue("Courses[] contains ICS46",rm.containsCourse(c3.getCourseCode()));
 	}
 	
 	//add 9 courses, boundary test case
@@ -77,11 +77,11 @@ public class testLab3 {
 		rm.addCourse(c1);
 		rm.addCourse(c2);
 		rm.addCourse(c3);
-		assertTrue("Courses[] contains c1",rm.containsCourse(c1));
+		assertTrue("Courses[] contains c1",rm.containsCourse(c1.getCourseCode()));
 		rm.deleteCourse("ICS31");
-		assertFalse("Courses[] does not contains c1",rm.containsCourse(c1));
-		assertTrue("Courses[] contains c2",rm.containsCourse(c2));
-		assertTrue("Courses[] contains c3",rm.containsCourse(c3));
+		assertFalse("Courses[] does not contains c1",rm.containsCourse(c1.getCourseCode()));
+		assertTrue("Courses[] contains c2",rm.containsCourse(c2.getCourseCode()));
+		assertTrue("Courses[] contains c3",rm.containsCourse(c3.getCourseCode()));
 	}
 	
 	//test delete course, boundary case
@@ -91,9 +91,9 @@ public class testLab3 {
 		c1.setCourseCode("ICS31");
 		c1.setCourseName("Introduction to Python");
 		rm.addCourse(c1);
-		assertTrue("Courses[] contains c1",rm.containsCourse(c1));
+		assertTrue("Courses[] contains c1",rm.containsCourse(c1.getCourseCode()));
 		rm.deleteCourse("ICS31");
-		assertFalse("Courses[] does not contains c1",rm.containsCourse(c1));
+		assertFalse("Courses[] does not contains c1",rm.containsCourse(c1.getCourseCode()));
 		
 	}
 	
@@ -291,7 +291,7 @@ public class testLab3 {
 		s.setID(1);
 		rm.addStudent(s,course.getCourseCode());
 		assertEquals(course.getEnrollment(),1);
-		rm.deleteStudent(s.getID(),course.getCourseCode());
+
 		assertEquals(course.getEnrollment(),0);
 		
 	}

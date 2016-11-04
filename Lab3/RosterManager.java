@@ -10,9 +10,9 @@ public class RosterManager {
 		courses = new Course[10];
 		total_courses = 0;
 	}
-	public boolean containsCourse(Course c){
+	public boolean containsCourse(String code){
 		for (int i = 0; i < total_courses;i++){
-			if(courses[i].getCourseCode() == c.getCourseCode()){
+			if(courses[i].getCourseCode().toLowerCase().equals(code.toLowerCase())){
 				return true;
 			}
 		}
@@ -23,9 +23,11 @@ public class RosterManager {
 	{
 		if (total_courses == 10)
 			throw new CourseLimitException();
-		else if (containsCourse(c))
+		else if (containsCourse(c.getCourseCode()))
 			throw new DuplicateCourseException();
-		courses[total_courses++] = c;
+		else{
+			courses[total_courses++] = c;
+		}
 	}
 
 	public void deleteCourse(String courseCode) throws CourseNotFoundException,EmptyCourseListException
@@ -56,16 +58,21 @@ public class RosterManager {
 		if (total_courses == 0){
 			throw new EmptyCourseListException();
 		}
-		for (int i = 0; i < total_courses;i++){
+		int i = 0;
+		for (; i < total_courses;i++){
 			if (courses[i].getCourseCode().toLowerCase().equals(courseCode.toLowerCase())){
-				if(!courses[i].containsStudent(s)){
-					courses[i].addStudent(s);
-				}
-				return;
+				break;
 			}
-			
 		}
-		throw new CourseNotFoundException();
+		if (i == total_courses){
+			throw new CourseNotFoundException();
+		}
+		else if(courses[i].containsStudent(s)){
+			throw new DuplicateStudentException();
+		}
+		else{
+			courses[i].addStudent(s);
+		}
 
 	}
 
@@ -75,18 +82,22 @@ public class RosterManager {
 		if (total_courses == 0){
 			throw new EmptyCourseListException();
 		}
-		for (int i = 0; i < total_courses;i++){
+		int i = 0;
+		for (; i < total_courses;i++){
 			if(courses[i].getCourseCode().toLowerCase().equals(courseCode.toLowerCase())){
-				if(courses[i].getEnrollment() == 0){
-					throw new EmptyStudentListException();
-				}
-				else{
-					courses[i].removeStudent(studentId);
-					return;
-				}
+				break;
 			}
 		}
-		throw new CourseNotFoundException();
+		if ( i == total_courses){
+			throw new CourseNotFoundException();
+		}
+		else if ((courses[i].getEnrollment() == 0)){
+			throw new EmptyStudentListException();
+		}
+		else{
+			courses[i].removeStudent(studentId);
+		}
+		
 	}
 	
 
@@ -95,11 +106,15 @@ public class RosterManager {
 	{
 		System.out.println("********************");
 		for (Course c: courses){
-			System.out.println(c.getCourseCode()+": "+c.getCourseName());
-			System.out.println("Enrolled: "+c.getEnrollment());
-			for (Student s: c.getEnrolled()){
-				System.out.println("           "+s.getID()+" | "+s.getLastName()+", "+s.getFirstName());
-				
+			if ( c != null){
+				System.out.println(c.getCourseCode()+": "+c.getCourseName());
+				System.out.println("Enrolled: "+c.getEnrollment());
+				for (Student s: c.getEnrolled()){
+					if (s != null){
+						System.out.println("          "+s.getID()+" | "+s.getLastName()+", "+s.getFirstName());
+					}
+					
+				}
 			}
 		}
 		System.out.println("********************");
@@ -116,7 +131,7 @@ public class RosterManager {
 			try{
 				ClassRosterUI.printMenu();
 				command = ClassRosterUI.getCommand().toUpperCase();
-				if(command == "Q"){
+				if(command.equals("Q")){
 					quit = true;
 				}
 				else if(command.equals("AC")){
@@ -126,10 +141,23 @@ public class RosterManager {
 					deleteCourse(ClassRosterUI.getCourseCode());
 				}
 				else if (command.equals("AS")){
-					addStudent(ClassRosterUI.getStudent(), ClassRosterUI.getCourseCode());
+					String c =  ClassRosterUI.getCourseCode();
+					if (!containsCourse(c)){
+						throw new CourseNotFoundException();
+					}
+					else{
+						addStudent(ClassRosterUI.getStudent(),c);
+					}
 				}
 				else if (command.equals("DS")){
-					deleteStudent(ClassRosterUI.getStudentID(), ClassRosterUI.getCourseCode());
+					String c =  ClassRosterUI.getCourseCode();
+					if (!containsCourse(c)){
+						throw new CourseNotFoundException();
+					}
+					else{
+						deleteStudent(ClassRosterUI.getStudentID(), c);
+					}
+					
 				}
 				else if (command.equals("P")){
 					printRoster();
@@ -164,7 +192,8 @@ public class RosterManager {
 
 		}
 		System.out.println("Program Finished!");
-
+		ClassRosterUI.closereader();
+		
 		}
 
 
