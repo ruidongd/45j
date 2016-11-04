@@ -16,7 +16,7 @@ public class Course {
 
 	public boolean containsStudent(Student s){
 		for (int i = 0; i < enrollment;i++){
-			if (enrolled_students[i].getID() == s.getID() ){
+			if (enrolled_students[i].getID() == s.getID()){
 				return true;
 			}
 		}
@@ -24,12 +24,42 @@ public class Course {
 	}
 	public void addStudent(Student s) throws StudentLimitException,DuplicateStudentException
 	{
-		if (enrollment == 50)
+		if (enrollment == 50){
 			throw new StudentLimitException();
-		else if (containsStudent(s))
+		}
+		if (containsStudent(s)){
+			
 			throw new DuplicateStudentException();
+		}
 		else
-			enrolled_students[enrollment++] = s;
+		{
+			int i = 0;
+			for (; i < enrollment; i++){
+
+				
+				boolean compareLastName = enrolled_students[i].getLastName().toLowerCase().compareTo(s.getLastName().toLowerCase()) > 0;
+				
+				boolean compareFirstName = ( enrolled_students[i].getLastName().toLowerCase().compareTo(s.getLastName().toLowerCase()) == 0) 
+						&&  enrolled_students[i].getFirstName().toLowerCase().compareTo(s.getFirstName().toLowerCase()) > 0;
+				
+				boolean compareID = ( enrolled_students[i].getLastName().toLowerCase().compareTo(s.getLastName().toLowerCase()) == 0) 
+						&&  enrolled_students[i].getFirstName().toLowerCase().compareTo(s.getFirstName().toLowerCase()) == 0 
+						&&  enrolled_students[i].getID() > s.getID();		
+				if(compareLastName || compareFirstName || compareID)
+				{
+					break;
+				}
+				
+			}
+			for(int j = enrollment; j > i; --j)
+			{
+				enrolled_students[j] = enrolled_students[j-1];
+			}
+			enrolled_students[i] = s;
+			++enrollment;
+			
+		}
+			
 	}
 
 	public void removeStudent(int studentID) throws StudentNotFoundException, EmptyStudentListException
