@@ -4,12 +4,9 @@ import java.util.List;
 import java.util.Scanner;
 public class ClassRosterUI {
 
-	private static RosterManager rm;
     private static Scanner reader = new Scanner(System.in);
 
 	public ClassRosterUI(){
-		rm = new RosterManager();
-
 	}
 	public static void closereader(){
 		reader.close();
@@ -23,16 +20,15 @@ public class ClassRosterUI {
 	public static String getCommand()
 	{
 		String command;
-		List<String> command_list = Arrays.asList("ac", "dc", "as", "ds", "p", "q");
+		List<String> command_list = Arrays.asList("AC", "DC", "AS", "DS", "P", "Q");
 
 		System.out.print("Enter Command: ");
-		command  = reader.nextLine();
+		command  = reader.nextLine().toUpperCase();
 		if(!command_list.contains(command))
 		{
 				System.out.print("Invalid command! Please re-enter the command!");
-				command = reader.nextLine();
+				command = reader.nextLine().toUpperCase();
 		}
-
 		return command;
 
 	}
@@ -44,14 +40,12 @@ public class ClassRosterUI {
 	}
 	public static Course getCourse()
 	{
-
 		Course c = new Course();
 		String coursecode = getCourseCode();
 		System.out.print("Enter Course Name: ");
 		String coursename = reader.nextLine();
 		c.setCourseCode(coursecode);
 		c.setCourseName(coursename);
-
 		return c;
 	}
 	public static Course getCourse(String courseCode)
@@ -59,7 +53,7 @@ public class ClassRosterUI {
 		Course c = new Course();
 		System.out.print("Enter Course Name: ");
 		String coursename = reader.nextLine();
-		c.setCourseCode(coursecode);
+		c.setCourseCode(courseCode);
 		c.setCourseName(coursename);
 		return c;
 	}
@@ -68,7 +62,6 @@ public class ClassRosterUI {
 
 		System.out.print("Enter StudentID: ");
 		int studentID = Integer.parseInt(reader.nextLine());
-
 		return studentID;
 	}
 	public static Student getStudent()
@@ -86,5 +79,17 @@ public class ClassRosterUI {
 
 		return s;
 	}
-
+	
+	public static Student getStudent(int id)
+	{
+		System.out.print("Enter Last Name: ");
+		String lastname = reader.nextLine();
+		System.out.print("Enter First Name: ");
+		String firstname = reader.nextLine();
+		Student s = new Student();
+		s.setFirstName(firstname);
+		s.setLastName(lastname);
+		s.setID(id);
+		return s;
+	}
 }

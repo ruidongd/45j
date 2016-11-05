@@ -23,7 +23,7 @@ public class testLab3 {
 	
 	//Normal case
 	@Test
-	public void testaddcourse1() throws CourseLimitException, DuplicateCourseException {
+	public void testaddcourse1() throws CourseLimitException, DuplicateCourseException, CourseNotFoundException {
 		//Normal Case
 		Course c1 = new Course();
 		c1.setCourseCode("ICS31");
@@ -33,7 +33,7 @@ public class testLab3 {
 	}
 	//Normal case
 	@Test
-	public void testaddcourse2()throws  CourseLimitException, DuplicateCourseException {
+	public void testaddcourse2()throws  CourseLimitException, DuplicateCourseException, CourseNotFoundException {
 		Course c2 = new Course();
 		c2.setCourseCode("ICS45C");
 		c2.setCourseName("Praogramming in C/C++");
@@ -42,7 +42,7 @@ public class testLab3 {
 	}
 	//Normal case
 	@Test
-	public void testaddcourse3()throws  CourseLimitException, DuplicateCourseException {
+	public void testaddcourse3()throws  CourseLimitException, DuplicateCourseException, CourseNotFoundException {
 		Course c3 = new Course();
 		c3.setCourseCode("ICS46");
 		c3.setCourseName("Data Structure Implementation and Analysis");
@@ -152,7 +152,7 @@ public class testLab3 {
 				throws DuplicateCourseException, CourseLimitException, CourseNotFoundException, 
 				EmptyStudentListException, StudentNotFoundException, EmptyCourseListException
 	{
-		
+		System.out.println(course.getEnrollment());
 		rm.addCourse(course);
 		rm.deleteStudent(1, "CS122B");
 	}
@@ -166,7 +166,7 @@ public class testLab3 {
 		s.setFirstName("Jacky");
 		s.setLastName("Lin");
 		rm.addStudent(s,course.getCourseCode());	
-		assertTrue("course c should contains student s",course.containsStudent(s));
+		assertTrue("course c should contains student s",course.containsStudent(s.getID()));
 		
 	}
 	//test add student, normal cases
@@ -240,14 +240,13 @@ public class testLab3 {
 	}
 	//test DuplicateStudentException
 	@Test(expected=DuplicateStudentException.class)
-		public void testDuplicateStudentException() throws StudentLimitException, DuplicateStudentException, CourseLimitException, DuplicateCourseException{
+		public void testDuplicateStudentException() throws StudentLimitException, DuplicateStudentException, CourseLimitException,EmptyCourseListException, DuplicateCourseException{
 		rm.addCourse(course);
 		Student s = new Student();
 		s.setFirstName("Alice");
 		s.setLastName("Lee");
-		course.addStudent(s);
-		course.addStudent(s);
-			
+		rm.addStudent(s, course.getCourseCode());
+		rm.addStudent(s, course.getCourseCode());
 	}
 	//test DeleteStudent,normal case
 	@Test
@@ -278,7 +277,7 @@ public class testLab3 {
 		//assert enrollment number is 3
 		assertEquals(course.getEnrollment(),2);
 		//assert s3 does not enroll in course
-		assertFalse(course.containsStudent(s3));
+		assertFalse(course.containsStudent(s3.getID()));
 		
 	}
 	//test DeleteStudent, boundary case
@@ -289,9 +288,9 @@ public class testLab3 {
 		s.setFirstName("Bob");
 		s.setLastName("Y");
 		s.setID(1);
-		rm.addStudent(s,course.getCourseCode());
+		rm.addStudent(s ,course.getCourseCode());
 		assertEquals(course.getEnrollment(),1);
-
+		rm.deleteStudent(s.getID(), course.getCourseCode());
 		assertEquals(course.getEnrollment(),0);
 		
 	}
