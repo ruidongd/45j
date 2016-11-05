@@ -8,18 +8,15 @@ public class ClassRosterUI {
 
 	public ClassRosterUI(){
 	}
-	//close sanner
 	public static void closereader(){
 		reader.close();
 	}
-	
 	public static void printMenu()
 	{
 		System.out.print("Select an action based on the following menu:\n----------\nac: Add Course\ndc: Drop Course\nas: Add Student\nds: Drop Student\np:  Print ClassRoster\n"
 				+ "q:  Quit Program\n----------\n");
 	}
-	
-	//read command from user
+
 	public static String getCommand()
 	{
 		String command;
@@ -33,16 +30,14 @@ public class ClassRosterUI {
 				command = reader.nextLine().toUpperCase();
 		}
 		return command;
+
 	}
-	//get course code from user
 	public static String getCourseCode(){
 
 		System.out.print("Enter Course Code: ");
 		String courseCode = reader.nextLine();
 		return courseCode;
 	}
-	
-	//return a course with enterd course code and course name
 	public static Course getCourse()
 	{
 		Course c = new Course();
@@ -62,8 +57,6 @@ public class ClassRosterUI {
 		c.setCourseName(coursename);
 		return c;
 	}
-	
-	//get the studentID from user
 	public static int getStudentID()
 	{
 
@@ -71,8 +64,6 @@ public class ClassRosterUI {
 		int studentID = Integer.parseInt(reader.nextLine());
 		return studentID;
 	}
-	
-	//return a new student with entered ID,last name, first name
 	public static Student getStudent()
 	{
 
@@ -85,7 +76,6 @@ public class ClassRosterUI {
 		s.setFirstName(firstname);
 		s.setLastName(lastname);
 		s.setID(StudentID);
-<<<<<<< HEAD
 
 		return s;
 	}
@@ -100,8 +90,6 @@ public class ClassRosterUI {
 		s.setFirstName(firstname);
 		s.setLastName(lastname);
 		s.setID(id);
-=======
->>>>>>> jzeng5/master
 		return s;
 	}
 }
