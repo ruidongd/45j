@@ -14,6 +14,7 @@ public class Course {
 		enrolled_students = new Student[50];
 	}
 
+	//return true if students enrolled in course
 	public boolean containsStudent(Student s){
 		for (int i = 0; i < enrollment;i++){
 			if (enrolled_students[i].getID() == s.getID()){
@@ -22,6 +23,7 @@ public class Course {
 		}
 		return false;
 	}
+	//add student to the course with lexicographical order
 	public void addStudent(Student s) throws StudentLimitException,DuplicateStudentException
 	{
 		if (enrollment == 50){
@@ -36,12 +38,14 @@ public class Course {
 			int i = 0;
 			for (; i < enrollment; i++){
 
-				
+				//compare last name
 				boolean compareLastName = enrolled_students[i].getLastName().toLowerCase().compareTo(s.getLastName().toLowerCase()) > 0;
 				
+				//if last name is the same,compare first name
 				boolean compareFirstName = ( enrolled_students[i].getLastName().toLowerCase().compareTo(s.getLastName().toLowerCase()) == 0) 
 						&&  enrolled_students[i].getFirstName().toLowerCase().compareTo(s.getFirstName().toLowerCase()) > 0;
 				
+				//if last name and first name are the same, compare student id
 				boolean compareID = ( enrolled_students[i].getLastName().toLowerCase().compareTo(s.getLastName().toLowerCase()) == 0) 
 						&&  enrolled_students[i].getFirstName().toLowerCase().compareTo(s.getFirstName().toLowerCase()) == 0 
 						&&  enrolled_students[i].getID() > s.getID();		
@@ -62,6 +66,7 @@ public class Course {
 			
 	}
 
+	//remove student in the course
 	public void removeStudent(int studentID) throws StudentNotFoundException, EmptyStudentListException
 	{
 		if (enrollment == 0){
