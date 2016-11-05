@@ -10,8 +10,13 @@ public class RosterManager {
 		courses = new Course[10];
 		total_courses = 0;
 	}
+<<<<<<< HEAD
 	public boolean containsCourse(String code)
 	{
+=======
+	//return true if courses[] contains this course with such coursecode
+	public boolean containsCourse(String code){
+>>>>>>> jzeng5/master
 		for (int i = 0; i < total_courses;i++){
 			if(courses[i].getCourseCode().toLowerCase().equals(code.toLowerCase()))
 				return true;
@@ -19,8 +24,14 @@ public class RosterManager {
 		return false;
 		
 	}
+<<<<<<< HEAD
 	
 	public void addCourse(Course c) throws DuplicateCourseException, CourseLimitException
+=======
+
+	//add a course to courses[]
+	public void addCourse(Course c) throws CourseLimitException, DuplicateCourseException
+>>>>>>> jzeng5/master
 	{
 		if(total_courses == 10)
 			throw new CourseLimitException();
@@ -29,7 +40,12 @@ public class RosterManager {
 		courses[total_courses++] = c;
 	}
 
+<<<<<<< HEAD
 	public void deleteCourse(String courseCode) throws EmptyCourseListException, CourseNotFoundException
+=======
+	//delete a course from courses[]
+	public void deleteCourse(String courseCode) throws CourseNotFoundException,EmptyCourseListException
+>>>>>>> jzeng5/master
 	{
 		if(total_courses == 0)
 			throw new EmptyCourseListException();
@@ -49,8 +65,14 @@ public class RosterManager {
 			courses[index] = courses[--total_courses];
 		courses[total_courses] = null;
 	}
+<<<<<<< HEAD
 
 	public void addStudent(Student s, String courseCode) throws EmptyCourseListException, StudentLimitException, DuplicateStudentException
+=======
+	
+	//add a student to course with such coursecode
+	public void addStudent(Student s, String courseCode) throws StudentLimitException,CourseNotFoundException,DuplicateStudentException, EmptyCourseListException, EmptyStudentListException
+>>>>>>> jzeng5/master
 	{
 		if(total_courses == 0)
 			throw new EmptyCourseListException();
@@ -67,8 +89,13 @@ public class RosterManager {
 			courses[i].addStudent(s);
 	}
 
+<<<<<<< HEAD
 
 	public void deleteStudent(int studentId, String courseCode) throws EmptyStudentListException, CourseNotFoundException, StudentNotFoundException
+=======
+	//delete a student with such studentID from course
+	public void deleteStudent(int studentId, String courseCode) throws StudentNotFoundException,CourseNotFoundException, EmptyStudentListException, EmptyCourseListException
+>>>>>>> jzeng5/master
 	{
 		int i = 0;
 		for (; i < total_courses;i++){
@@ -79,7 +106,13 @@ public class RosterManager {
 			throw new CourseNotFoundException();
 		courses[i].removeStudent(studentId);
 	}
+<<<<<<< HEAD
 
+=======
+	
+
+	//print enrolled students in existing courses
+>>>>>>> jzeng5/master
 	public void printRoster()
 	{
 		System.out.println("********************");
@@ -96,6 +129,7 @@ public class RosterManager {
 		System.out.println("********************");
 	}
 
+	//main loop to execute the program
 	public void run()
 	{
 		System.out.println("Welcome to Class Roster Manager!");
@@ -198,6 +232,7 @@ public class RosterManager {
 
 		}
 		System.out.println("Program Finished!");
+		//close scanner
 		ClassRosterUI.closereader();
 
 		}

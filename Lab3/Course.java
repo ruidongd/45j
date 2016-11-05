@@ -14,17 +14,28 @@ public class Course {
 		enrolled_students = new Student[50];
 	}
 
+<<<<<<< HEAD
 	public boolean containsStudent(int id){
+=======
+	//return true if students enrolled in course
+	public boolean containsStudent(Student s){
+>>>>>>> jzeng5/master
 		for (int i = 0; i < enrollment;i++){
 			if (enrolled_students[i].getID() == id)
 				return true;
 		}
 		return false;
 	}
+<<<<<<< HEAD
 	public void addStudent(Student s)
+=======
+	//add student to the course with lexicographical order
+	public void addStudent(Student s) throws StudentLimitException,DuplicateStudentException
+>>>>>>> jzeng5/master
 	{
 			int i = 0;
 			for (; i < enrollment; i++){
+<<<<<<< HEAD
 				boolean compareLastName = enrolled_students[i].getLastName().toLowerCase().compareTo(s.getLastName().toLowerCase()) > 0;
 
 				boolean compareFirstName = ( enrolled_students[i].getLastName().toLowerCase().compareTo(s.getLastName().toLowerCase()) == 0)
@@ -34,6 +45,20 @@ public class Course {
 						&&  enrolled_students[i].getFirstName().toLowerCase().compareTo(s.getFirstName().toLowerCase()) == 0
 						&&  enrolled_students[i].getID() > s.getID();
 
+=======
+
+				//compare last name
+				boolean compareLastName = enrolled_students[i].getLastName().toLowerCase().compareTo(s.getLastName().toLowerCase()) > 0;
+				
+				//if last name is the same,compare first name
+				boolean compareFirstName = ( enrolled_students[i].getLastName().toLowerCase().compareTo(s.getLastName().toLowerCase()) == 0) 
+						&&  enrolled_students[i].getFirstName().toLowerCase().compareTo(s.getFirstName().toLowerCase()) > 0;
+				
+				//if last name and first name are the same, compare student id
+				boolean compareID = ( enrolled_students[i].getLastName().toLowerCase().compareTo(s.getLastName().toLowerCase()) == 0) 
+						&&  enrolled_students[i].getFirstName().toLowerCase().compareTo(s.getFirstName().toLowerCase()) == 0 
+						&&  enrolled_students[i].getID() > s.getID();		
+>>>>>>> jzeng5/master
 				if(compareLastName || compareFirstName || compareID)
 					break;
 			}
@@ -45,7 +70,12 @@ public class Course {
 			++enrollment;
 	}
 
+<<<<<<< HEAD
 	public void removeStudent(int studentID) throws EmptyStudentListException, StudentNotFoundException
+=======
+	//remove student in the course
+	public void removeStudent(int studentID) throws StudentNotFoundException, EmptyStudentListException
+>>>>>>> jzeng5/master
 	{
 		// Same logic with removeCourse
 		if(enrollment == 0)
